@@ -28,31 +28,65 @@ public class App {
         int max = 6;
         
         int maxDigits = 4;
-        String randomNo = generateFourRandomDigits(min, max, maxDigits);
+        //String randomNo = generateFourRandomDigits(min, max, maxDigits);
+        String randomNo = "2656";
         //System.out.println(generateFourRandomDigits(min, max, maxDigits));
 
         Console console = System.console();
         int cp = 0;
         int c = 0;
         int attemptCounter = 1; // maximum 12 attempts
-        while (attemptCounter<3) {
-            String input = console.readLine("Attempt: " + attemptCounter + ". Enter a number between 1111 and 6666. Only use digits 1 to 6.\n");
+        System.out.println("The random No is : " + randomNo);
+        while (attemptCounter<13) {
             
+            String tempRandomNo;
+            String tempInput;
+            tempRandomNo = randomNo;
+            String input = console.readLine("Attempt: " + attemptCounter + ". Enter a number between 1111 and 6666. Only use digits 1 to 6.\n");
+            if (input.equals("quit")) {
+                break;
+            }
+
             if (!input.matches("[1-6]{4}")) {
                 System.out.println("Please enter 4 digit from 1 to 6");
                 continue;
 
             } else {
-                for (int i = 0; i<input.length(); i++) {
+                tempInput = input;
+                for (int i = 0; i<4; i++) {
                     char characterInput = input.charAt(i);
-                    for (int j = 0; j<randomNo.length(); j++) {
-                        char characterSystem = randomNo.charAt(j);
-                        if (characterInput == characterSystem) {
-                            cp++;
-                        } 
+                    if (tempInput.charAt(i) == tempRandomNo.charAt(i)) {
+                        cp++;
+                        tempInput = tempInput.replace(tempInput.charAt(i),'7');
+                        tempRandomNo = tempRandomNo.replace(tempRandomNo.charAt(i),'7');
+
+
+
+                    } else {
+                        for (int j = 0; j<4; j++) {
+                            if ( j!= i) {
+                                if (tempRandomNo.charAt(j) == tempInput.charAt(i) && tempRandomNo.charAt(j) != '7') {
+                                    c++;
+                                    tempRandomNo = tempRandomNo.replace(tempRandomNo.charAt(j),'7');
+                                    break;
+                                    //input = input.replace(input.charAt(j), '7');
+                                }
+                            }
+                            }
+                            
                     }
-                    
+
+                  
                 }
+                System.out.printf("Cp: %d, C: %d\n", cp,c);
+                if (cp == 4) {
+                    System.out.println("You won!");
+                    break;
+                }
+             
+                cp = 0;
+                c = 0;
+
             }
             
             attemptCounter++;
